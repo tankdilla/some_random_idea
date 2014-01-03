@@ -47,3 +47,6 @@ end
 gem 'haml-rails'
 gem 'rspec-rails'
 gem 'jazz_hands'
+gem 'thin'
+gem 'kaminari'
+

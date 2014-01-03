@@ -1,0 +1,27 @@
+%h1= @dataset.description
+
+%p
+  Routes:
+  = Route.count
+
+%p
+  Longest route by number of stops:
+  = RouteStop.by_route.descending.first.route.number
+  Stops:
+  = RouteStop.by_route.descending.first.count
+
+%p
+  Stop that appears on the most routes:
+  = RouteStop.by_stop.descending.first.stop.on_street.name
+  &
+  = RouteStop.by_stop.descending.first.stop.cross_street.name
+  Number of routes:
+  = RouteStop.by_stop.descending.first.count
+
+%p
+  Select route
+
+%ul
+  - @routes.each do |route|
+    %li
+      = link_to route.number, dataset_route_path(@dataset, route)

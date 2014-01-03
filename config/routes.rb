@@ -4,6 +4,15 @@ Ctaridership::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # root 'welcome#index'
+  root 'home#index'
+
+  resources :datasets, controller: :ridership_datasets, only: :show do |dataset|
+
+    resources :details, controller: :ridership_details, only: :show
+
+    resources :routes, only: :show
+    resources :streets, only: :show
+  end
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

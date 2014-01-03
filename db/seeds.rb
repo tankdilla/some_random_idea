@@ -32,8 +32,8 @@ ridership_lines.flat_map{ |line| line.field('routes').try(:split, ',')}.compact.
 	route = route.strip
 
 	begin	
-		if Route.where(route_number: route).first.nil?
-			Route.create!(route_number: route)
+		if Route.where(number: route).first.nil?
+			Route.create!(number: route)
 		end
 	rescue Exception => e
 		puts "at route, #{e.message}"
@@ -45,12 +45,15 @@ ridership_lines.each do |line|
 
 	if Stop.where(number: line[:stop_id]).first.nil?
 		begin
+			longitude, latitude = line[:location].gsub(/[()]/, '').split(',').map(&:strip)
+
 			stop = Stop.create!(
 				number: line[:stop_id],
-				on_street: 		Street.where(name: line[:on_street]).first.id,
-				cross_street: Street.where(name: line[:cross_street]).first.id,
+				on_street_id: 		Street.where(name: line[:on_street]).first.id,
+				cross_street_id: Street.where(name: line[:cross_street]).first.id,
 				daytype: 	line[:daytype],
-				location: line[:location]
+				longitude: longitude,
+				latitude:  latitude
 			)
 
 			routes = (line[:routes].present? ? line[:routes].split(','): []).compact
@@ -63,7 +66,7 @@ ridership_lines.each do |line|
 				route = route.strip
 				
 				RouteStop.create!(
-					route_id: Route.where(route_number: route).first.id,
+					route_id: Route.where(number: route).first.id,
 					stop_id:  stop.id
 				)
 			end
@@ -82,4 +85,12 @@ ridership_lines.each do |line|
 	rescue Exception => e
 		"at details, #{e.message}"
 	end
+
 end
+
+puts "Ridership Datasets: #{RidershipDataset.count}"
+puts "Ridership Details: #{RidershipDetail.count}"
+puts "Streets: #{Street.count}"
+puts "Routes: #{Route.count}" 
+puts "Stops: #{Stop.count}"
+puts "RouteStops: #{RouteStop.count}"

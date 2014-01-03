@@ -1,0 +1,31 @@
+%h1 
+  Route 
+  = @route.number
+
+#route-chart{data: {stops: @details.map{|d| {stop: d.stop.number, boardings: d.boardings.to_s, alightings: d.alightings.to_s}}.to_json}}
+
+= paginate @details
+
+%table
+  %tr
+    %th Stop Number
+    %th On Street
+    %th Cross Street
+    %th Boardings
+    %th Alightings
+    %th Location
+
+  - @details.each do |detail|
+    %tr
+      %td= detail.stop.number
+      %td= detail.stop.on_street.name
+      %td= detail.stop.cross_street.name
+      %td= number_with_precision(detail.boardings, precision: 1)
+      %td= number_with_precision(detail.alightings, precision: 1)
+      %td
+        = detail.stop.longitude
+        ,
+        = detail.stop.latitude
+
+%p
+  = link_to 'Back to dataset', dataset_path(@dataset)

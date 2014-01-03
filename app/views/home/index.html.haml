@@ -1,0 +1,6 @@
+%h1 CTA Ridership Data
+
+%ul.datasets
+  - @datasets.each do |dataset|
+    %li
+      = link_to dataset.description, dataset_path(dataset)

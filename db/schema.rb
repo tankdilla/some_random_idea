@@ -40,17 +40,18 @@ ActiveRecord::Schema.define(version: 20131231035425) do
   end
 
   create_table "routes", force: true do |t|
-    t.string   "route_number"
+    t.string   "number"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "stops", force: true do |t|
     t.integer  "number"
-    t.integer  "on_street"
-    t.integer  "cross_street"
+    t.integer  "on_street_id"
+    t.integer  "cross_street_id"
     t.string   "daytype"
-    t.string   "location"
+    t.decimal  "longitude"
+    t.decimal  "latitude"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
