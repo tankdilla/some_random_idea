@@ -1,3 +1,17 @@
-.datasets {
-	list-style-type: none;
+body {
+  background-color: #fff;
+  color: #333;
+  font-family: verdana, arial, helvetica, sans-serif;
+  font-size: 13px;
+  line-height: 18px;
+}
+
+table, th, td {
+  border: 1px solid black;
+  padding: 4px;
+}
+
+table {
+  border-collapse:collapse;
+  margin-top: 5px;
 }

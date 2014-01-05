@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131231035425) do
+ActiveRecord::Schema.define(version: 20140104073545) do
 
   create_table "ridership_datasets", force: true do |t|
     t.string   "description"
@@ -27,6 +27,17 @@ ActiveRecord::Schema.define(version: 20131231035425) do
     t.integer  "stop_id"
     t.decimal  "boardings"
     t.decimal  "alightings"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "ridership_route_details", force: true do |t|
+    t.integer  "ridership_dataset_id"
+    t.integer  "route_id"
+    t.decimal  "total_boardings"
+    t.decimal  "total_alightings"
+    t.decimal  "median_boardings"
+    t.decimal  "median_alightings"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

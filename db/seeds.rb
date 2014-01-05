@@ -83,9 +83,36 @@ ridership_lines.each do |line|
 			alightings: line[:alightings]
 		)
 	rescue Exception => e
-		"at details, #{e.message}"
+		puts "at details, #{e.message}"
 	end
 
+end
+
+Route.all.each do |route|
+	begin
+		details = ridership_dataset.ridership_details.by_route_id(route.id)
+
+		sorted_boardings = details.sort_by(&:boardings).map(&:boardings)
+		sorted_alightings = details.sort_by(&:alightings).map(&:alightings)
+		len = sorted_boardings.length
+		
+		median_boardings = 
+			len % 2 == 1 ? sorted_boardings[len/2] : (sorted_boardings[len/2 - 1] + sorted_boardings[len/2]).to_f / 2
+		
+		median_alightings = 
+			len % 2 == 1 ? sorted_alightings[len/2] : (sorted_alightings[len/2 - 1] + sorted_alightings[len/2]).to_f / 2
+
+		RidershipRouteDetail.create!(
+			ridership_dataset_id: ridership_dataset.id,
+			route_id: route.id,
+			total_boardings: details.inject(0) { |sum, n| sum += n.boardings },
+			total_alightings: details.inject(0) { |sum, n| sum += n.alightings },
+			median_boardings: median_boardings,
+			median_alightings: median_alightings
+		)
+	rescue Exception => e
+		puts "at route detail, #{e.message}"
+	end
 end
 
 puts "Ridership Datasets: #{RidershipDataset.count}"
@@ -94,3 +121,4 @@ puts "Streets: #{Street.count}"
 puts "Routes: #{Route.count}" 
 puts "Stops: #{Stop.count}"
 puts "RouteStops: #{RouteStop.count}"
+puts "RidershipRouteDetails: #{RidershipRouteDetail.count}"

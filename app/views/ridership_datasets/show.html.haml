@@ -5,12 +5,6 @@
   = Route.count
 
 %p
-  Longest route by number of stops:
-  = RouteStop.by_route.descending.first.route.number
-  Stops:
-  = RouteStop.by_route.descending.first.count
-
-%p
   Stop that appears on the most routes:
   = RouteStop.by_stop.descending.first.stop.on_street.name
   &
@@ -18,10 +12,26 @@
   Number of routes:
   = RouteStop.by_stop.descending.first.count
 
-%p
-  Select route
+Select route:
+= form_tag(dataset_routes_path(@dataset), method: :get) do |f|
+  = select_tag :route_id, options_from_collection_for_select(@routes, :id, :number)
 
-%ul
-  - @routes.each do |route|
-    %li
-      = link_to route.number, dataset_route_path(@dataset, route)
+  = submit_tag 'Go'
+
+%table
+  %tr
+    %th= sortable "route_number"
+    %th= sortable "stops"
+    %th= sortable "boardings"
+    %th= sortable "alightings"
+    %th= sortable "median_boardings"
+    %th= sortable "median_alightings"
+
+  - @route_ridership_details.each do |detail|
+    %tr
+      %td= link_to detail.route.number, dataset_route_path(@dataset.id, detail.route.id)
+      %td= detail.route.stops.count
+      %td= number_with_precision(detail.total_boardings, precision: 1)
+      %td= number_with_precision(detail.total_alightings, precision: 1)
+      %td= number_with_precision(detail.median_boardings, precision: 1)
+      %td= number_with_precision(detail.median_alightings, precision: 1)

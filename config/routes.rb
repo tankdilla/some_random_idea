@@ -10,8 +10,8 @@ Ctaridership::Application.routes.draw do
 
     resources :details, controller: :ridership_details, only: :show
 
-    resources :routes, only: :show
-    resources :streets, only: :show
+    resources :routes, only: [:index, :show]
+    resources :streets, only: [:index, :show]
   end
 
   # Example of regular route:

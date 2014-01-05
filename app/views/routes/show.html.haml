@@ -2,7 +2,7 @@
   Route 
   = @route.number
 
-#route-chart{data: {stops: @details.map{|d| {stop: d.stop.number, boardings: d.boardings.to_s, alightings: d.alightings.to_s}}.to_json}}
+#route-chart{data: {stops: details_for_chart}}
 
 = paginate @details
 
@@ -26,6 +26,8 @@
         = detail.stop.longitude
         ,
         = detail.stop.latitude
+
+= paginate @details
 
 %p
   = link_to 'Back to dataset', dataset_path(@dataset)
