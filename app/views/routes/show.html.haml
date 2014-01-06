@@ -8,11 +8,11 @@
 
 %table
   %tr
-    %th Stop Number
+    %th= sortable "stops"
     %th On Street
     %th Cross Street
-    %th Boardings
-    %th Alightings
+    %th= sortable "boardings"
+    %th= sortable "alightings"
     %th Location
 
   - @details.each do |detail|
@@ -23,9 +23,7 @@
       %td= number_with_precision(detail.boardings, precision: 1)
       %td= number_with_precision(detail.alightings, precision: 1)
       %td
-        = detail.stop.longitude
-        ,
-        = detail.stop.latitude
+        = link_to "Location", "http://maps.google.com/?q=#{detail.stop.longitude},#{detail.stop.latitude}", {target: "_blank"}
 
 = paginate @details
 
