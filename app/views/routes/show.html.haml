@@ -14,6 +14,7 @@
     %th= sortable "boardings"
     %th= sortable "alightings"
     %th Location
+    %th Stop found on other routes
 
   - @details.each do |detail|
     %tr
@@ -24,6 +25,10 @@
       %td= number_with_precision(detail.alightings, precision: 1)
       %td
         = link_to "Location", "http://maps.google.com/?q=#{detail.stop.longitude},#{detail.stop.latitude}", {target: "_blank"}
+      %td
+        - if (other_routes = detail.stop.routes.reject{|route| route.number == @route.number.to_s}).present?
+          - other_routes.each do |route|
+            = link_to route.number, dataset_route_path(@dataset, route.id)
 
 = paginate @details
 
